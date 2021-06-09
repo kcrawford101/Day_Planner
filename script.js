@@ -71,7 +71,10 @@ function saveReminder() {
     localStorage.setItem("myDay", JSON.stringify(myDay));
 }
 
+// Will display any data in localStorage
 function displayReminder() {
-    
+    myDay.forEach(function (_thisHour) {
+        $(`#${_thisHour.id}`).val(_thisHour.reminder);
+    })
 }
 
