@@ -94,7 +94,7 @@ function init() {
 // Displays scheduler
 myDay.forEach (function (thisHour) {
     // Generate time blocks row
-    hourRow = $("<form>").attribute({
+    hourRow = $("<form>").attr({
         "class": "row"
     });
     $(".container").append(hourRow);
@@ -103,28 +103,28 @@ myDay.forEach (function (thisHour) {
     // Generate the time field
     var hourField = $("<div>")
     .text (`${thisHour.hour}${thisHour.meridiem}`)
-    .attribute({
+    .attr({
         "class": "col-md-2 hour"
     });
 
     // Will generate the schedule data
     var hourPlan = $("<div>")
-        .attribute({
+        .attr({
             "class": "col-md-9 description p-0"
         });
     var planData = $("<textarea>");
     hourPlan.append(planData);
-    planData.attribute("id", thisHour.id);
+    planData.attr("id", thisHour.id);
     if (thisHour.time < moment().format("HH")) {
-        planData.attribute ({
+        planData.attr ({
             "class": "past", 
         })
     } else if (thisHour.time === moment().format("HH")) {
-        planData.attribute({
+        planData.attr({
             "class": "present"
         })
     } else if (thisHour.time > moment().format("HH")) {
-        planData.attribute({
+        planData.attr({
             "class": "future"
         })
     }
@@ -141,3 +141,11 @@ myDay.forEach (function (thisHour) {
 
 init();
 
+$(".saveBtn").on("click", function(event) {
+    event.preventDefault();
+    var saveIndex = $(this).siblings(".description").children(".future").attr("id");
+    myDay[saveIndex].reminder = $(this).siblings(".description").children(".future").val();
+    console.log(saveIndex);
+    saveReminders();
+    displayReminders();
+})
