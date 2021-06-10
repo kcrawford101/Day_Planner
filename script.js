@@ -59,6 +59,8 @@ var myDay = [
 
 ]
 
+
+
 // Adds the current date and time to the header
 function headerDate() {
     var currentHeaderDate = moment().format('MMMM Do YYYY, h:mm:ss a');
@@ -71,10 +73,71 @@ function saveReminder() {
     localStorage.setItem("myDay", JSON.stringify(myDay));
 }
 
+
 // Will display any data in localStorage
 function displayReminder() {
     myDay.forEach(function (_thisHour) {
         $(`#${_thisHour.id}`).val(_thisHour.reminder);
     })
 }
+
+// Allows existing localStorage date to display
+function init() {
+    var storedDay = JSON.parse(localStorage.getItem("myDay"));
+    if (storedDay) {
+        myDay = storedDay;
+    }
+    saveReminder();
+    displayReminder();
+}
+
+// Displays scheduler
+myDay.forEach (function (thisHour) {
+    // Generate time blocks row
+    hourRow = $("<form>").attribute({
+        "class": "row"
+    });
+    $(".container").append(hourRow);
+
+
+    // Generate the time field
+    var hourField = $("<div>")
+    .text (`${thisHour.hour}${thisHour.meridiem}`)
+    .attribute({
+        "class": "col-md-2 hour"
+    });
+
+    // Will generate the schedule data
+    var hourPlan = $("<div>")
+        .attribute({
+            "class": "col-md-9 description p-0"
+        });
+    var planData = $("<textarea>");
+    hourPlan.append(planData);
+    planData.attribute("id", thisHour.id);
+    if (thisHour.time < moment().format("HH")) {
+        planData.attribute ({
+            "class": "past", 
+        })
+    } else if (thisHour.time === moment().format("HH")) {
+        planData.attribute({
+            "class": "present"
+        })
+    } else if (thisHour.time > moment().format("HH")) {
+        planData.attribute({
+            "class": "future"
+        })
+    }
+
+    // Creates the save buttons
+    var saveButton = $("<i class='far fa-save fa-lg'></i>")
+    var savePlan = $("<button>")
+        .attr({
+            "class": "col-md-1 saveBtn"
+    });
+    savePlan.append(saveButton);
+    hourRow.append(hourField, hourPlan, savePlan);
+})
+
+init();
 
