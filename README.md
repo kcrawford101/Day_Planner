@@ -8,3 +8,5 @@ This day planner is to help the user organize and plan their tasks for the day.
 - Uses localStorage pseudo data
 
 ## Screenshot
+![] (Day_Planner.jpg);
+
